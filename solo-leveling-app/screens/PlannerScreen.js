@@ -3,6 +3,8 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 export default function PlannerScreen() {
+    const completeWorkout = () => setXp(prev => prev + 25); // Gain 24 XP for completing a workout
+
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Daily Workout</Text>

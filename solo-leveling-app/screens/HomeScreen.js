@@ -8,7 +8,7 @@ export default function HomeScreen() {
     const nextLevelXp = (level + 1) * 100; // XP needed for the next level
     const progress = ((xp % 100) / 100) * 100; // Progress towards the next level
 
-    const completeWorkout = () => setXp(prev => prev + 25); // Gain 24 XP for completing a workout
+    const completeWorkout = () => setXp(prev => prev + 10); // Gain 25 XP for completing a workout
 
     return (
         <View style={styles.container}>
