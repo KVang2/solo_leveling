@@ -1,32 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import HomeScreen from './screens/HomeScreen';
 import QuestScreen from './screens/QuestScreen';
 import Stats from './screens/Stats';
-import { useEffect } from 'react';
+import GameOver from './screens/GameOver';
+import PlayerScreen from './screens/PlayerScreen';
+import LoginScreen from './screens/LoginScreen';
+
 import { scheduleDailyWarning } from './utils/Warning';
 import { XPProvider } from './xp';
 
-
+// Bottom tab navigator (for after login)
 const Tab = createBottomTabNavigator();
+function MainTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Quest" component={QuestScreen} />
+      <Tab.Screen name="Stats" component={Stats} />
+    </Tab.Navigator>
+  );
+}
 
+// Stack navigator (for onboarding and login)
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-    useEffect(() => {
-        // Schedule the daily warning notification
-        scheduleDailyWarning();
-    }, []);
+  useEffect(() => {
+    scheduleDailyWarning();
+  }, []);
 
-    return (
-        <XPProvider>
-            <NavigationContainer>
-                <Tab.Navigator>
-                    <Tab.Screen name="Home" component={HomeScreen} />
-                    <Tab.Screen name="Quest" component={QuestScreen} />
-                    <Tab.Screen name="Stats" component={Stats} />
-                </Tab.Navigator>
-            </NavigationContainer>
-        </XPProvider>
-    );
+  return (
+    <XPProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="PlayerScreen" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="PlayerScreen" component={PlayerScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="GameOver" component={GameOver} />
+          <Stack.Screen name="MainTabs" component={MainTabs} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </XPProvider>
+  );
 }

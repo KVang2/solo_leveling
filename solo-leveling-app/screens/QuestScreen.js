@@ -1,9 +1,25 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { XPContext } from '../xp';
 
 export default function QuestScreen() {
-  const { xp, setXp } = useContext(XPContext);
+  const {
+    xp,
+    setXp,
+    level,
+    currentLevelXp,
+    nextLevelXp,
+    progress,
+  } = useContext(XPContext);
 
   const [inputs, setInputs] = useState({
     pushups: '',
@@ -29,8 +45,8 @@ export default function QuestScreen() {
 
   const completeWorkout = () => {
     // if (completedToday) {
-    //  Alert.alert("Completed", "You’ve already completed today’s quest.");
-    //  return;
+    //   Alert.alert("Completed", "You’ve already completed today’s quest.");
+    //   return;
     // }
 
     if (!isAllValid()) {
@@ -51,7 +67,9 @@ export default function QuestScreen() {
 
         {["pushups", "squats", "crunches", "situps"].map((key) => (
           <View key={key} style={styles.inputGroup}>
-            <Text style={styles.label}>{key.charAt(0).toUpperCase() + key.slice(1)} (min: 100)</Text>
+            <Text style={styles.label}>
+              {key.charAt(0).toUpperCase() + key.slice(1)} [0/100]
+            </Text>
             <TextInput
               style={styles.input}
               keyboardType="numeric"
@@ -67,25 +85,83 @@ export default function QuestScreen() {
           disabled={completedToday}
         />
 
-        <Text style={styles.xp}>Current XP: {xp}</Text>
-        {completedToday && <Text style={styles.doneText}>You’ve completed today’s quest!</Text>}
+        <View style={styles.status}>
+          <Text style={styles.xp}>Level: {level}</Text>
+          <Text style={styles.xp}>
+            Xp: {currentLevelXp} / {nextLevelXp}
+          </Text>
+          <Text style={styles.xp}>
+            Progress: {Math.round(progress)}%
+          </Text>
+
+          <View style={styles.progressBar}>
+            <View
+              style={[styles.progressFill, { width: `${progress}%` }]}
+            />
+          </View>
+        </View>
+
+        {completedToday && (
+          <Text style={styles.doneText}>You’ve completed today’s quest!</Text>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  header: { fontSize: 22, marginBottom: 10 },
-  inputGroup: { marginBottom: 12 },
-  label: { fontSize: 16 },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#06121C',
+  },
+  header: {
+    fontSize: 22,
+    marginBottom: 10,
+    color: '#00BFFF',
+  },
+  inputGroup: {
+    marginBottom: 12
+  },
+  label: {
+    fontSize: 16,
+    color: '#00BFFF',
+  },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 8,
     borderRadius: 5,
-    marginTop: 4
+    marginTop: 4,
+    textColor: '#00BFFF',
+    color: '#00BFFF',
   },
-  xp: { marginTop: 20, fontSize: 16 },
-  doneText: { color: 'green', marginTop: 10, fontSize: 16 }
+  status: {
+    marginTop: 20,
+    color: '#00BFFF',
+  },
+  xp: {
+    fontSize: 16,
+    color: '#00BFFF',
+  },
+  doneText: {
+    color: 'green',
+    marginTop: 10,
+    fontSize: 16
+  },
+  progressBar: {
+    height: 10,
+    backgroundColor: '#ccc',
+    borderRadius: 5,
+    marginTop: 5,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: 10,
+    backgroundColor: 'blue',
+  },
+  status: {
+    color: '#00BFFF',
+    marginTop: 40,
+  },
 });

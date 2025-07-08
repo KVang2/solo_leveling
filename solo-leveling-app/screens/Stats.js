@@ -11,6 +11,7 @@ export default function StatsScreen() {
     setBonusPoints,
     baseStats,
     setBaseStats,
+    currentLevelXp,
   } = useContext(XPContext);
 
   const [manualStats, setManualStats] = useState({
@@ -60,9 +61,13 @@ export default function StatsScreen() {
   const renderStatRow = (label) => (
     <View style={styles.statRow} key={label}>
       <Text style={styles.statText}>
-        {label.charAt(0).toUpperCase() + label.slice(1)}: {baseStats[label] + manualStats[label]} (Bonus: {manualStats[label]})
+        {label.charAt(0).toUpperCase() + label.slice(1)}:
       </Text>
-      <Button title="+" onPress={() => handleAddPoint(label)} />
+
+      <Text style={styles.statValue}>
+        {baseStats[label] + manualStats[label]} ({manualStats[label]})
+      </Text>
+        <Button title="[+]" onPress={() => handleAddPoint(label)} />
     </View>
   );
 
@@ -70,7 +75,7 @@ export default function StatsScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Hunter Stats</Text>
       <Text style={styles.level}>Level: {level}</Text>
-      <Text style={styles.xp}>XP: {xp} / {nextLevelXp}</Text>
+      <Text style={styles.xp}>Xp: {currentLevelXp} / {nextLevelXp}</Text>
       <Text style={styles.bonus}>Unspent Bonus Points: {bonusPoints}</Text>
 
       {Object.keys(baseStats).map(renderStatRow)}
@@ -83,11 +88,54 @@ export default function StatsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, alignItems: 'center' },
-  title: { fontSize: 28, fontWeight: 'bold', marginBottom: 15 },
-  level: { fontSize: 20, marginBottom: 10 },
-  xp: { fontSize: 16, marginBottom: 10 },
-  bonus: { fontSize: 16, marginBottom: 20 },
-  statRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 5, width: '100%' },
-  statText: { fontSize: 16, flex: 1 },
+  container: {
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: '#06121C',
+    color: '#00BFFF',
+    width: '100%',
+    height: '100%',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    color: '#00BFFF',
+  },
+  level: {
+    fontSize: 20,
+    marginBottom: 10,
+    color: '#00BFFF',
+  },
+  xp: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: '#00BFFF',
+  },
+  bonus: {
+    fontSize: 16,
+    marginBottom: 20,
+    color: '#00BFFF',
+  },
+  statRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+    width: '100%',
+  },
+  statLabel: {
+    color: '#00BFFF',
+    fontSize: 16,
+    flex: 1,
+  },
+  statValue: {
+    color: '#00BFFF',
+    fontSize: 16,
+    marginRight: 4,
+  },
+  statText: {
+    fontSize: 16,
+    color: '#00BFFF',
+    flex: 1,
+  },
 });
