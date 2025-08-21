@@ -42,7 +42,7 @@ const styles = {
         marginBottom: 25,
         color: '#00BFFF',
     },
-    box: {
+      box: {
         padding: 20,
         borderRadius: 10,
         borderColor: '#ffffff',
